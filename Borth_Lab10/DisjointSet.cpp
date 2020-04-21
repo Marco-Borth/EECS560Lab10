@@ -74,6 +74,38 @@ void DisjointSet<T>::add(T data) {
 }
 
 template <typename T>
+void DisjointSet<T>::Union(int p1, int p2) {
+	p1--;
+	p2--;
+	if ((p1 >= 0 && p1 < m_size) && (p2 >= 0 && p2 < m_size) && (p1 != p2)) {
+		if (m_arr[p1]->getEntry() < m_arr[p2]->getEntry()) {
+			if (m_arr[p1]->getNext() == nullptr) {
+				m_arr[p1]->setNext(m_arr[p2]);
+				cout << "\nOutput: Union on " << m_arr[p1]->getEntry() << " and " << m_arr[p2]->getEntry() << " has been done.";
+				cout << " The representative element is " << m_arr[p1]->getEntry() << ".\n\n";
+			} else {
+				int newp1 = 0;
+				for (int i = 0; i < m_size; i++) {
+					if (m_arr[i]->getEntry() == m_arr[p1]->getNext()->getEntry()) {
+						newp1 = i;
+					}
+				}
+				p1 = newp1;
+				p1++;
+				p2++;
+				Union(p1, p2);
+			}
+		} else {
+			p2++;
+			p1++;
+			Union(p2, p1);
+		}
+	} else {
+		throw(std::runtime_error("ERROR: Invalid Indexs.\n"));
+	}
+}
+
+template <typename T>
 void DisjointSet<T>::clear() {
 	if (!isEmpty()) {
 		for(int i = 0; i < m_size; i++) {

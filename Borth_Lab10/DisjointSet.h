@@ -63,6 +63,8 @@ public:
 */
   void add(T data);
 
+  void Union(int p1, int p2);
+
 /*
 * @pre none.
 * @param key is a valid K object.

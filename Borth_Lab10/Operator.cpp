@@ -57,7 +57,38 @@ void Operator::run() {
         }
         // 2- DeleteMaxDownloadedGame - Complete!
         else if (option == 2) {
+          int index1, index2;
+          cout << "\n>Output: Enter the representative elements for the two sets which you wish to union:\n>";
+          cin >> index1;
+          cout << ">";
+          cin >> index2;
 
+          while(1) {
+            if (cin.fail()) {
+              cin.clear();
+              cin.ignore(numeric_limits<streamsize>::max(),'\n');
+              cout << "\nERROR! Invalid Input!\n\n"; //if not an int, must try again.
+              cout << "\n>Output: Enter the representative elements for the two sets which you wish to union:\n>";
+              cin >> index1;
+              cout << ">";
+              cin >> index2;
+            } else {
+              try {
+                setMaster.Union(index1,index2);
+                /*
+                if (index1 != index2) {
+                  setMaster.Union(index1,index2);
+                } else {
+                  cout << "\nERROR! Invalid Union!\n\n";
+                }
+                */
+              } catch (runtime_error) {
+                cout << "\nERROR! Invalid Union!\n\n";
+              }
+
+              break;
+            }
+          }
         }
         // 3- DeleteGame - Complete!
         else if (option == 3) {
