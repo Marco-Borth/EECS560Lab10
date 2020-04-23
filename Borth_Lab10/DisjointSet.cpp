@@ -84,7 +84,6 @@ void DisjointSet<T>::Union(int p1, int p2) {
 			}
 		}
 
-
 		for (int i = 0; i < m_size; i++) {
 			if (m_arr[i]->getEntry() == p2) {
 				p2Index = i;
@@ -162,8 +161,31 @@ T DisjointSet<T>::findRepresentaive(int index) {
 }
 
 template <typename T>
-void DisjointSet<T>::PathCompression(int value) {
+void DisjointSet<T>::pathCompression(int value) {
+	int index = -1;
+	for (int i = 0; i < m_size; i++) {
+		if (m_arr[i]->getEntry() == value) {
+			index = i;
+		}
+	}
 
+	if (index != -1) {
+		int repIndex = index;
+		while (m_arr[repIndex]->getNext() != nullptr) {
+			int newIndex = 0;
+			for (int i = 0; i < m_size; i++) {
+				if (m_arr[i]->getEntry() == m_arr[repIndex]->getNext()->getEntry()) {
+					newIndex = i;
+				}
+			}
+			repIndex = newIndex;
+		}
+
+		m_arr[index]->setNext(m_arr[repIndex]);
+		cout << ">Output: Path compression has been done successfully.\n\n";
+	} else {
+		throw(std::runtime_error("ERROR: Invalid Indexes.\n"));
+	}
 }
 
 template <typename T>

@@ -69,7 +69,7 @@ public:
 
   void findElement(int value);
 
-  void PathCompression(int value);
+  void pathCompression(int value);
 
 /*
 * @pre none.

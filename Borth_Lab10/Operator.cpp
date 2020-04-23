@@ -55,7 +55,7 @@ void Operator::run() {
         if (option == 1) {
           MakeSet();
         }
-        // 2- DeleteMaxDownloadedGame - Complete!
+        // 2- Union - Complete!
         else if (option == 2) {
           int index1, index2;
           cout << "\n>Output: Enter the representative elements for the two sets which you wish to union:\n>";
@@ -83,7 +83,7 @@ void Operator::run() {
             }
           }
         }
-        // 3- DeleteGame - Complete!
+        // 3- Find - Complete!
         else if (option == 3) {
           int value;
           cout << "\n>Output: Enter the element you want to find:\n>";
@@ -97,17 +97,39 @@ void Operator::run() {
               cout << "\n>Output: Enter the element you want to find:\n>";
               cin >> value;
             } else {
-              setMaster.findElement(value);
+              try {
+                setMaster.findElement(value);
+              } catch (runtime_error) {
+                cout << "\nERROR! Invalid Value!\n\n";
+              }
               break;
             }
           }
-
         }
-        // 4- PrintGamesAtMinimumLevels && 5- PrintGamesAtMaximumLevels - Complete!
+        // 4- PathCompression - Complete!
         else if (option == 4) {
+          int value;
+          cout << "\n>Output: Enter the element on whose set you would want to perform path compression:\n>";
+          cin >> value;
 
+          while(1){
+            if (cin.fail()) {
+              cin.clear();
+              cin.ignore(numeric_limits<streamsize>::max(),'\n');
+              cout << "\nERROR! Invalid Input!\n\n"; //if not an int, must try again.
+              cout << "\n>Output: Enter the element on whose set you would want to perform path compression:\n>";
+              cin >> value;
+            } else {
+              try {
+                setMaster.pathCompression(value);
+              } catch (runtime_error) {
+                cout << "\nERROR! Invalid Value!\n\n";
+              }
+              break;
+            }
+          }
         }
-        // 6- TotalMinimumDownloadedGames && 7- TotalMaximumDownloadedGames - Complete!
+        // 5- PrintPath - Complete!
         else if (option == 5) {
 
         }
