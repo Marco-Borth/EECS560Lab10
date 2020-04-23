@@ -75,40 +75,53 @@ void DisjointSet<T>::add(T data) {
 
 template <typename T>
 void DisjointSet<T>::Union(int p1, int p2) {
-	p1--;
-	p2--;
-	if ((p1 >= 0 && p1 < m_size) && (p2 >= 0 && p2 < m_size) && (p1 != p2)) {
-		if (m_arr[p1]->getEntry() < m_arr[p2]->getEntry()) {
-			if (m_arr[p1]->getNext() == nullptr) {
-				m_arr[p1]->setNext(m_arr[p2]);
-				cout << "\nOutput: Union on " << m_arr[p1]->getEntry() << " and " << m_arr[p2]->getEntry() << " has been done.";
-				int pRep = p1;
-				for (int i = 0; i < m_size; i++) {
-					if (m_arr[i]->getNext() != nullptr && m_arr[i]->getNext()->getEntry() == m_arr[pRep]->getEntry()) {
-						pRep = i;
-						i = 0;
+	if (p1 != p2) {
+		int p1Index = -1;
+		int p2Index = -1;
+		for (int i = 0; i < m_size; i++) {
+			if (m_arr[i]->getEntry() == p1) {
+				p1Index = i;
+			}
+		}
+
+
+		for (int i = 0; i < m_size; i++) {
+			if (m_arr[i]->getEntry() == p2) {
+				p2Index = i;
+			}
+		}
+
+		if (p1Index != -1 && p2Index != -1) {
+			if (m_arr[p1Index]->getEntry() < m_arr[p2Index]->getEntry()) {
+				if (m_arr[p1Index]->getNext() == nullptr) {
+					m_arr[p1Index]->setNext(m_arr[p2Index]);
+					cout << "\nOutput: Union on " << m_arr[p1Index]->getEntry() << " and " << m_arr[p2Index]->getEntry() << " has been done.";
+					int pRep = p1Index;
+					for (int i = 0; i < m_size; i++) {
+						if (m_arr[i]->getNext() != nullptr && m_arr[i]->getNext()->getEntry() == m_arr[pRep]->getEntry()) {
+							pRep = i;
+							i = 0;
+						}
 					}
+					cout << " The representative element is " << m_arr[pRep]->getEntry() << ".\n\n";
+				} else {
+					int newp1 = 0;
+					for (int i = 0; i < m_size; i++) {
+						if (m_arr[i]->getEntry() == m_arr[p1Index]->getNext()->getEntry()) {
+							newp1 = i;
+						}
+					}
+					p1 = m_arr[newp1]->getEntry();
+					Union(p1, p2);
 				}
-				cout << " The representative element is " << m_arr[pRep]->getEntry() << ".\n\n";
 			} else {
-				int newp1 = 0;
-				for (int i = 0; i < m_size; i++) {
-					if (m_arr[i]->getEntry() == m_arr[p1]->getNext()->getEntry()) {
-						newp1 = i;
-					}
-				}
-				p1 = newp1;
-				p1++;
-				p2++;
-				Union(p1, p2);
+				Union(p2, p1);
 			}
 		} else {
-			p2++;
-			p1++;
-			Union(p2, p1);
+			throw(std::runtime_error("ERROR: Invalid Indexes.\n"));
 		}
 	} else {
-		throw(std::runtime_error("ERROR: Invalid Indexes.\n"));
+		throw(std::runtime_error("ERROR: Invalid Values.\n"));
 	}
 }
 
@@ -146,6 +159,11 @@ T DisjointSet<T>::findRepresentaive(int index) {
 	} else {
 		return m_arr[index]->getEntry();
 	}
+}
+
+template <typename T>
+void DisjointSet<T>::PathCompression(int value) {
+
 }
 
 template <typename T>

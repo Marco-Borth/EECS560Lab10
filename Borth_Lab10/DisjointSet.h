@@ -32,6 +32,8 @@ private:
 */
   void resize();
 
+  T findRepresentaive(int index);
+
 public:
 /*
 * @pre define T object.
@@ -67,7 +69,7 @@ public:
 
   void findElement(int value);
 
-  T findRepresentaive(int index);
+  void PathCompression(int value);
 
 /*
 * @pre none.
