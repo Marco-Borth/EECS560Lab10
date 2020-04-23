@@ -95,13 +95,8 @@ void DisjointSet<T>::Union(int p1, int p2) {
 				if (m_arr[p1Index]->getNext() == nullptr) {
 					m_arr[p1Index]->setNext(m_arr[p2Index]);
 					cout << "\nOutput: Union on " << m_arr[p1Index]->getEntry() << " and " << m_arr[p2Index]->getEntry() << " has been done.";
-					int pRep = p1Index;
-					for (int i = 0; i < m_size; i++) {
-						if (m_arr[i]->getNext() != nullptr && m_arr[i]->getNext()->getEntry() == m_arr[pRep]->getEntry()) {
-							pRep = i;
-							i = 0;
-						}
-					}
+					int pRep = 0;
+					pRep = UnionRep(p1Index);
 					cout << " The representative element is " << m_arr[pRep]->getEntry() << ".\n\n";
 				} else {
 					int newp1 = 0;
@@ -122,6 +117,19 @@ void DisjointSet<T>::Union(int p1, int p2) {
 	} else {
 		throw(std::runtime_error("ERROR: Invalid Values.\n"));
 	}
+}
+
+template <typename T>
+int DisjointSet<T>::UnionRep(int index) {
+	int i = 0;
+	while (i < m_size) {
+		if (m_arr[i]->getNext() != nullptr && m_arr[i]->getNext()->getEntry() == m_arr[index]->getEntry()) {
+			return UnionRep(i);
+			break;
+		}
+		i++;
+	}
+	return index;
 }
 
 template <typename T>
@@ -185,6 +193,49 @@ void DisjointSet<T>::pathCompression(int value) {
 		cout << ">Output: Path compression has been done successfully.\n\n";
 	} else {
 		throw(std::runtime_error("ERROR: Invalid Indexes.\n"));
+	}
+}
+
+template <typename T>
+void DisjointSet<T>::printPath(int value) {
+	int index = -1;
+	for (int i = 0; i < m_size; i++) {
+		if (m_arr[i]->getEntry() == value) {
+			index = i;
+		}
+	}
+
+	if (index != -1) {
+		int pRep = index;
+		cout << "Output: The path for the element " << m_arr[index]->getEntry() << " is: " << m_arr[index]->getEntry();
+		int i = 0;
+		while (i < m_size) {
+			if (m_arr[i]->getNext() != nullptr && m_arr[i]->getNext()->getEntry() == m_arr[pRep]->getEntry()) {
+				pRep = i;
+				cout << "->" << m_arr[pRep]->getEntry();
+				printPathRec(pRep);
+				break;
+			}
+			i++;
+		}
+		cout << ".\n\n";
+	} else {
+		throw(std::runtime_error("ERROR: Invalid Indexes.\n"));
+	}
+}
+
+template <typename T>
+void DisjointSet<T>::printPathRec(int index) {
+	int pRep = index;
+	int i = 0;
+	while (i < m_size) {
+		if (m_arr[i]->getNext() != nullptr && m_arr[i]->getNext()->getEntry() == m_arr[pRep]->getEntry()) {
+			pRep = i;
+			cout << "->" << m_arr[pRep]->getEntry();
+			printPathRec(pRep);
+			break;
+		}
+		i++;
 	}
 }
 

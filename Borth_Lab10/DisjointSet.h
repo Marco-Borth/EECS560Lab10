@@ -32,7 +32,11 @@ private:
 */
   void resize();
 
+  int UnionRep(int index);
+
   T findRepresentaive(int index);
+
+  void printPathRec(int index);
 
 public:
 /*
@@ -70,6 +74,8 @@ public:
   void findElement(int value);
 
   void pathCompression(int value);
+
+  void printPath(int value);
 
 /*
 * @pre none.

@@ -131,7 +131,26 @@ void Operator::run() {
         }
         // 5- PrintPath - Complete!
         else if (option == 5) {
+          int value;
+          cout << "\n>Output: Enter the element you want to find the path for:\n>";
+          cin >> value;
 
+          while(1){
+            if (cin.fail()) {
+              cin.clear();
+              cin.ignore(numeric_limits<streamsize>::max(),'\n');
+              cout << "\nERROR! Invalid Input!\n\n"; //if not an int, must try again.
+              cout << "\n>Output: Enter the element you want to find the path for:\n>";
+              cin >> value;
+            } else {
+              try {
+                setMaster.printPath(value);
+              } catch (runtime_error) {
+                cout << "\nERROR! Invalid Value!\n\n";
+              }
+              break;
+            }
+          }
         }
         // 10- Exit - Complete!
         else if (option == 10) {
