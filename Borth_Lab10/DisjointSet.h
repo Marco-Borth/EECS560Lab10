@@ -65,6 +65,10 @@ public:
 
   void Union(int p1, int p2);
 
+  void findElement(int value);
+
+  T findRepresentaive(int index);
+
 /*
 * @pre none.
 * @param key is a valid K object.

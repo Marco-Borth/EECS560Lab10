@@ -75,13 +75,6 @@ void Operator::run() {
             } else {
               try {
                 setMaster.Union(index1,index2);
-                /*
-                if (index1 != index2) {
-                  setMaster.Union(index1,index2);
-                } else {
-                  cout << "\nERROR! Invalid Union!\n\n";
-                }
-                */
               } catch (runtime_error) {
                 cout << "\nERROR! Invalid Union!\n\n";
               }
@@ -92,6 +85,22 @@ void Operator::run() {
         }
         // 3- DeleteGame - Complete!
         else if (option == 3) {
+          int value;
+          cout << "\n>Output: Enter the element you want to find:\n>";
+          cin >> value;
+
+          while(1){
+            if (cin.fail()) {
+              cin.clear();
+              cin.ignore(numeric_limits<streamsize>::max(),'\n');
+              cout << "\nERROR! Invalid Input!\n\n"; //if not an int, must try again.
+              cout << "\n>Output: Enter the element you want to find:\n>";
+              cin >> value;
+            } else {
+              setMaster.findElement(value);
+              break;
+            }
+          }
 
         }
         // 4- PrintGamesAtMinimumLevels && 5- PrintGamesAtMaximumLevels - Complete!
@@ -121,6 +130,7 @@ void Operator::run() {
 }
 
 void Operator::MakeSet() {
+  setMaster.clear();
   //Open File.
   inFile.open(file);
 

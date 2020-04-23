@@ -82,7 +82,14 @@ void DisjointSet<T>::Union(int p1, int p2) {
 			if (m_arr[p1]->getNext() == nullptr) {
 				m_arr[p1]->setNext(m_arr[p2]);
 				cout << "\nOutput: Union on " << m_arr[p1]->getEntry() << " and " << m_arr[p2]->getEntry() << " has been done.";
-				cout << " The representative element is " << m_arr[p1]->getEntry() << ".\n\n";
+				int pRep = p1;
+				for (int i = 0; i < m_size; i++) {
+					if (m_arr[i]->getNext() != nullptr && m_arr[i]->getNext()->getEntry() == m_arr[pRep]->getEntry()) {
+						pRep = i;
+						i = 0;
+					}
+				}
+				cout << " The representative element is " << m_arr[pRep]->getEntry() << ".\n\n";
 			} else {
 				int newp1 = 0;
 				for (int i = 0; i < m_size; i++) {
@@ -101,7 +108,43 @@ void DisjointSet<T>::Union(int p1, int p2) {
 			Union(p2, p1);
 		}
 	} else {
-		throw(std::runtime_error("ERROR: Invalid Indexs.\n"));
+		throw(std::runtime_error("ERROR: Invalid Indexes.\n"));
+	}
+}
+
+template <typename T>
+void DisjointSet<T>::findElement(int value) {
+	bool isFound = false;
+	int index = 0;
+
+	for (int i = 0; i < m_size; i++) {
+		if (m_arr[i]->getEntry() == value) {
+			index = i;
+			isFound = true;
+		}
+	}
+
+	if (isFound) {
+		cout << ">Output: Element " << value << " has been found successfully.";
+		cout << " The representative element is " << findRepresentaive(index) << ".\n\n";
+	} else {
+		cout << ">Output: Sorry! " << value << " is not found!\n\n";
+	}
+}
+
+
+template <typename T>
+T DisjointSet<T>::findRepresentaive(int index) {
+	if (m_arr[index]->getNext() != nullptr) {
+		int repIndex = 0;
+		for (int i = 0; i < m_size; i++) {
+			if (m_arr[i]->getEntry() == m_arr[index]->getNext()->getEntry()) {
+				repIndex = i;
+			}
+		}
+		return findRepresentaive(repIndex);
+	} else {
+		return m_arr[index]->getEntry();
 	}
 }
 
