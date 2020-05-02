@@ -24,10 +24,13 @@ class Operator
 private:
   int option;
 
-  string file;
-  string input;
+  string file, graph;
 
   DisjointSet <int> setMaster;
+
+  int islandNumber;
+  string* Island;
+  int** islandDistances;
 
   ifstream inFile;
 
@@ -46,10 +49,12 @@ public:
 
   void MakeSet();
 
+  void BuildGraph();
+
 /*
 * @pre filename is a string.
 * @post Operator object is constructed, file == filename.
 */
-  Operator(string file1);
+  Operator(string file1, string file2);
 };
 #endif

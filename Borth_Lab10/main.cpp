@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		Executive exec(argv[1]);
+		Executive exec(argv[1], argv[2]);
 		exec.run();
 	}
 

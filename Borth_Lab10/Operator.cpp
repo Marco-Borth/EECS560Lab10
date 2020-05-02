@@ -14,8 +14,10 @@
 #include <limits>
 using namespace std;
 
-Operator::Operator(string file1){
+Operator::Operator(string file1, string file2){
   file = file1;
+  graph = file2;
+  BuildGraph();
 }
 
 void Operator::printCommands() {
@@ -199,4 +201,75 @@ void Operator::MakeSet() {
   // Close File.
   inFile.close();
   cout << "\nOutput: The disjoint sets have been constructed.\n\n";
+}
+
+
+void Operator::BuildGraph() {
+  delete[] Island;
+  Island = new string[100];
+  islandNumber = 0;
+  //Open File.
+  inFile.open(graph);
+
+  if (!inFile.is_open()) {
+    cout << "File name not valid!\n\n";
+  } else {
+    int RatingInputFailures = 0;
+    string input;
+    int distance;
+    while (!inFile.eof()) {
+      inFile >> input;
+      //cout << input << "\n";
+
+      if (inFile.fail()) {
+        inFile.clear();
+        inFile.ignore(numeric_limits<streamsize>::max(),'\n');
+        RatingInputFailures++;
+      } else {
+        string name = "\0";
+        name = name + input;
+        if (input.at(0) != 'n' && input.at(1) != ',') {
+          while (input.at(input.length() - 1) != ',') {
+            inFile >> input;
+            name = name + input;
+          }
+          Island[islandNumber] = name;
+          //cout << Island[islandNumber] << "\n";
+
+          int number;
+          inFile >> number;
+          islandNumber = number;
+        } else {
+          string size = "\0";
+          for (int i = 2; i < input.length(); i++) {
+            size = size + input.at(i);
+          }
+
+          int gridSize = stoi(size);
+          islandDistances = new int*[gridSize];
+
+          for (int i = 0; i < gridSize; i++) {
+            islandDistances[i] = new int[gridSize];
+          }
+
+          for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+              inFile >> distance;
+              //cout << distance << "\n";
+              islandDistances[i][j] = distance;
+            }
+          }
+
+          islandNumber = gridSize;
+        }
+      }
+    }
+
+    if(RatingInputFailures > 1)
+      cout << "ERROR! Invalid Input for Movie Ratings Detected: " << RatingInputFailures << "\n";
+  }
+
+  // Close File.
+  inFile.close();
+  //cout << "\nOutput: The Graph have been constructed.\n\n";
 }

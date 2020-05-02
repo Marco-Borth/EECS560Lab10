@@ -13,11 +13,12 @@
 using namespace std;
 
 // Create Executive Object.
-Executive::Executive(string file1name) {
+Executive::Executive(string file1name, string file2name) {
 	file1 = file1name;
+	file2 = file2name;
 }
 
 void Executive::run() {
-	Operator Prog(file1);
+	Operator Prog(file1, file2);
 	Prog.run();
 }

@@ -17,7 +17,7 @@ using namespace std;
 class Executive
 {
 private:
-	string file1;
+	string file1, file2;
 
 public:
 /**
@@ -30,7 +30,7 @@ public:
 * @pre filename is a string.
 * @post Executive object is constructed.
 */
-	Executive(string file1name);
+	Executive(string file1name, string file2name);
 };
 
 #endif
