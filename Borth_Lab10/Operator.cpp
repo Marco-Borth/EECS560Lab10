@@ -154,6 +154,81 @@ void Operator::run() {
             }
           }
         }
+        // 6- BFS - Complete!
+        else if (option == 6) {
+          bool connection[islandNumber][islandNumber];
+
+          for (int i = 0; i < islandNumber; i++) {
+            for (int j = 0; j < islandNumber; j++) {
+              connection[i][j] = false;
+            }
+          }
+
+          cout << "\nTree Edges: ";
+          for (int j = 0; j < islandNumber; j++) {
+            if (islandDistances[0][j] != -1 && islandDistances[0][j] != 1) {
+              if (connection[0][j] == false && connection[j][0] == false) {
+                cout << "(";
+                cout << Island[0] << " " << Island[j];
+                connection[0][j] = true;
+                connection[j][0] = true;
+                cout << ") ";
+              }
+            }
+          }
+
+          cout << "\nCross Edges: ";
+          for (int i = 1; i < islandNumber; i++) {
+            for (int j = 1; j < islandNumber; j++) {
+              if (islandDistances[i][j] != -1 && islandDistances[i][j] != 1) {
+                if (connection[i][j] == false && connection[j][i] == false) {
+                  cout << "(";
+                  cout << Island[i] << " " << Island[j];
+                  connection[i][j] = true;
+                  connection[j][i] = true;
+                  cout << ") ";
+                }
+              }
+            }
+          }
+          cout << "\n\n";
+        }
+        // 7- DFS - Complete!
+        else if (option == 7) {
+          bool connection[islandNumber][islandNumber];
+
+          for (int i = 0; i < islandNumber; i++) {
+            for (int j = 0; j < islandNumber; j++) {
+              connection[i][j] = false;
+            }
+          }
+
+          cout << "\nTree Edges: ";
+          for (int j = 0; j < islandNumber - 1; j++) {
+            if (islandDistances[j][j + 1] != -1 && islandDistances[j][j + 1] != 1) {
+              cout << "(";
+              cout << Island[j] << " " << Island[j + 1];
+              connection[j][j + 1] = true;
+              connection[j + 1][j] = true;
+              cout << ") ";
+            }
+          }
+
+          cout << "\nBack Edges: ";
+          for (int j = 0; j < islandNumber; j++) {
+            if (islandDistances[0][j] != -1 && islandDistances[0][j] != 1) {
+              if (connection[0][j] == false && connection[j][0] == false) {
+                cout << "(";
+                cout << Island[0] << " " << Island[j];
+                connection[0][j] = true;
+                connection[j][0] = true;
+                cout << ") ";
+              }
+            }
+          }
+
+          cout << "\n\n";
+        }
         // 10- Exit - Complete!
         else if (option == 10) {
           cout << "\nClosing Program...\n";
