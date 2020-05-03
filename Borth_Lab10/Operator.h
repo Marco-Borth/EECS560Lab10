@@ -12,6 +12,7 @@
 #define OPERATOR_H
 
 #include "DisjointSet.h"
+#include "Heap.h"
 #include <string>
 #include <stdexcept>
 #include <iostream>
@@ -31,6 +32,10 @@ private:
   int islandNumber;
   string* Island;
   int** islandDistances;
+  int* islandConnections;
+  bool** connection;
+
+  Heap<int> sumOfDistance;
 
   ifstream inFile;
 
@@ -46,6 +51,8 @@ public:
 * @post prints list of commands to display for the user.
 */
   void printCommands();
+
+  void findMinEdge(int edges, bool newEdge, int origin, int next);
 
   void MakeSet();
 

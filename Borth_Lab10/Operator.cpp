@@ -15,6 +15,8 @@
 using namespace std;
 
 Operator::Operator(string file1, string file2){
+  sumOfDistance.setPriority("min");
+  sumOfDistance.setApproach("bottomup");
   file = file1;
   graph = file2;
   BuildGraph();
@@ -156,8 +158,6 @@ void Operator::run() {
         }
         // 6- BFS - Complete!
         else if (option == 6) {
-          bool connection[islandNumber][islandNumber];
-
           for (int i = 0; i < islandNumber; i++) {
             for (int j = 0; j < islandNumber; j++) {
               connection[i][j] = false;
@@ -195,8 +195,6 @@ void Operator::run() {
         }
         // 7- DFS - Complete!
         else if (option == 7) {
-          bool connection[islandNumber][islandNumber];
-
           for (int i = 0; i < islandNumber; i++) {
             for (int j = 0; j < islandNumber; j++) {
               connection[i][j] = false;
@@ -229,6 +227,44 @@ void Operator::run() {
 
           cout << "\n\n";
         }
+        // 8- Kruskal MST - Complete!
+        else if (option == 8) {
+          sumOfDistance.clear();
+          for (int i = 0; i < islandNumber; i++) {
+            for (int j = 0; j < islandNumber; j++) {
+              connection[i][j] = false;
+            }
+          }
+
+          findMinEdge(0, true, 0, 0);
+          int totalDistance = 0;
+          for (int i = 0; i < sumOfDistance.getSize(); i++) {
+            totalDistance = totalDistance + sumOfDistance.getEntry(i);
+          }
+          cout << "\nTotal length of the route = " << totalDistance << " miles";
+          cout << "\nTotal estimate to construct the bridges in the route = " << totalDistance;
+          cout << " * 250K = " << totalDistance * 250 << "K $";
+          cout << "\n\n";
+        }
+        // 9- Prim MST - Complete!
+        else if (option == 9) {
+          sumOfDistance.clear();
+          for (int i = 0; i < islandNumber; i++) {
+            for (int j = 0; j < islandNumber; j++) {
+              connection[i][j] = false;
+            }
+          }
+
+          findMinEdge(0, true, 0, 0);
+          int totalDistance = 0;
+          for (int i = 0; i < sumOfDistance.getSize(); i++) {
+            totalDistance = totalDistance + sumOfDistance.getEntry(i);
+          }
+          cout << "\nTotal length of the route = " << totalDistance << " miles";
+          cout << "\nTotal estimate to construct the bridges in the route = " << totalDistance;
+          cout << " * 250K = " << totalDistance * 250 << "K $";
+          cout << "\n\n";
+        }
         // 10- Exit - Complete!
         else if (option == 10) {
           cout << "\nClosing Program...\n";
@@ -245,6 +281,56 @@ void Operator::run() {
 
   cout << "\nBye Bye!\n";
   cout << "\nHave a nice day!...\n\n";
+}
+
+void Operator::findMinEdge(int edges, bool newEdge, int origin, int next) {
+  int shortestDistance = 2147483647;
+  int originIsland = 0;
+  int nextIsland = 0;
+
+  for (int i = 0; i < islandNumber; i++) {
+    for (int j = 0; j < islandNumber; j++) {
+      if (islandDistances[i][j] > 1 && islandDistances[i][j] < shortestDistance) {
+        if (connection[i][j] == false && connection[j][i] == false) {
+          shortestDistance = islandDistances[i][j];
+          originIsland = i;
+          nextIsland = j;
+        }
+      }
+    }
+  }
+
+  connection[originIsland][nextIsland] = true;
+  connection[nextIsland][originIsland] = true;
+
+  if (newEdge == true) {
+    cout << "(";
+    cout << Island[originIsland] << " " << Island[nextIsland];
+    cout << "){" << shortestDistance;
+    cout << "} ";
+    sumOfDistance.add(shortestDistance);
+    edges++;
+    newEdge = false;
+    origin = originIsland;
+    next = nextIsland;
+  } else {
+    if (nextIsland != origin) {
+      cout << "(";
+      cout << Island[originIsland] << " " << Island[nextIsland];
+      cout << "){" << shortestDistance;
+      cout << "} ";
+      sumOfDistance.add(shortestDistance);
+      connection[origin][nextIsland] = true;
+      connection[nextIsland][origin] = true;
+      edges++;
+    } else {
+      newEdge = true;
+    }
+  }
+
+  if (edges < islandNumber - 1) {
+    findMinEdge(edges, newEdge, origin, next);
+  }
 }
 
 void Operator::MakeSet() {
@@ -322,9 +408,13 @@ void Operator::BuildGraph() {
 
           int gridSize = stoi(size);
           islandDistances = new int*[gridSize];
+          islandConnections = new int[gridSize];
+          connection = new bool*[gridSize];
 
           for (int i = 0; i < gridSize; i++) {
             islandDistances[i] = new int[gridSize];
+            islandConnections[i] = 0;
+            connection[i] = new bool[gridSize];
           }
 
           for (int i = 0; i < gridSize; i++) {
@@ -332,6 +422,7 @@ void Operator::BuildGraph() {
               inFile >> distance;
               //cout << distance << "\n";
               islandDistances[i][j] = distance;
+              connection[i][j] = false;
             }
           }
 
